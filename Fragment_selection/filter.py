@@ -73,7 +73,7 @@ class Filter:
         for sma in bad_sub_list:
             bad = Chem.MolFromSmarts(sma)
             number_of_bad = len(mol.GetSubstructMatches(bad))
-            if number_of_bad > 1:
+            if number_of_bad > 0:
                 return False
 
         return True
