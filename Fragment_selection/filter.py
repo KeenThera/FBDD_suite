@@ -52,17 +52,29 @@ class Filter:
         return all([F_count <= 3, Br_count < 3, Cl_count <= 3, I_count <= 1, S_count <= 1])
 
     def bad_substructure_filter(self):
+        ''' molecules contains bad substurcture should be exclued from fragment list
+        '''
+        bad_sub_list = ['[#7R][O]',
+                        'C1C(C1)N(*)*',
+                        'c:1:c(:c:c:c:c:1)N([CH3])[CH1]=[CH1]*',
+                        '[CH2]1[CH2]C([CH2][CH2]N1*)[OH1]',
+                        'c:1:c:c:n:c(:c:1)[Cl,F,Br,I]',
+                        'c:1:c:c:n:c(:c:1)C#N',
+                        'N1(C(CCC1=O)=O)*',
+                        'c:1:c2:c(:c:c:c:1)O[CH2]O2',
+                        'c:1:c2:c(:c:c(:c:1)[OH1])ccn2*',
+                        'c:1:c2:c(:c:c:c:1)c(cn2*)[CH2]*',
+                        'c:1:c:c(:c:c:c:1[CH2]*)[OH1]',
+                        '[cH1]:1:c(:[cH1]:[cH1]:c(:[cH1]:1)[O,N;R0])[O,N;R0]',
+                        'N1(CCC(C1)F)*',
+                        'N1(CCC[CH1](C1)F)*',
+                        'c:1:c2:c(:c(:c:c:1)[NH2])CN(CC2C:3:c:c:c:c:c:3)[CH3]']
         mol = self.mol
-        bad1 = Chem.MolFromSmarts("[cR2][cR2][cR2]")
-        bad2 = Chem.MolFromSmarts("[A][cR2][a][cR2][A]")
-
-        number_of_bad1 = len(mol.GetSubstructMatches(bad1, maxMatches=3))
-        if number_of_bad1 > 1:
-            return False
-
-        number_of_bad2 = len(mol.GetSubstructMatches(bad2, maxMatches=3))
-        if number_of_bad2 > 1:
-            return False
+        for sma in bad_sub_list:
+            bad = Chem.MolFromSmarts(sma)
+            number_of_bad = len(mol.GetSubstructMatches(bad))
+            if number_of_bad > 1:
+                return False
 
         return True
 
@@ -155,15 +167,3 @@ class Filter:
         I_count = mol.GetSubstructMatches(Chem.MolFromSmarts('[I]'))
 
         return all([F_count <= 4, I_count <= 0])
-
-
-
-
-
-
-
-
-
-
-
-
