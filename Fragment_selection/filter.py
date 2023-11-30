@@ -156,7 +156,7 @@ class Filter:
         num_rotatable_bonds = NumRotatableBonds(mol)
         tpsa = CalcTPSA(mol, includeSandP=True)
 
-        return return all([exact_mwt < 300, mol_log_p <= 3, num_hydrogen_bond_donors <= 3, num_hydrogen_bond_acceptors <= 3, num_rotatable_bonds <= 3, tpsa <= 60])
+        return all([exact_mwt < 300, mol_log_p <= 3, num_hydrogen_bond_donors <= 3, num_hydrogen_bond_acceptors <= 3, num_rotatable_bonds <= 3, tpsa <= 60])
 
 
     def organic_filter():
