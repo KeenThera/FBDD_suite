@@ -9,14 +9,23 @@ from rdkit .Chem import SaltRemover
 
 class Filter:
 
-    def __init__(self, choice, input_smiles):
+    def __init__(self, choice):
+        """choice: mol, rdkit mol object
+                   smi, smiles"""
         self.choice = choice
-        self.input_smiles = input_smiles
-        self.mol = Chem.MolFromSmiles(input_smiles)
-        if "." in input_smiles:
-            remover = SaltRemover.SaltRemover()
-            res = remover.StripMol(mol)
-            self.mol = res
+
+    def load_mol(self, input_mol):
+        if self.choice == "mol":
+            self.mol = input_mol
+        elif self.choice == "smi":
+            self.input_smiles = input_mol
+            self.mol = Chem.MolFromSmiles(input_mol)
+            if "." in input_mol:
+                remover = SaltRemover.SaltRemover()
+                res = remover.StripMol(mol)
+                self.mol = res
+        else:
+            pass
 
 
     def LogP_filter(self):
@@ -156,10 +165,9 @@ class Filter:
         for atom in mol.GetAtoms():
             symbol = atom.GetSymbol()
             if symbol in element_list:
-                pass
+                return True
             else:
                 return False
-        return True
 
     def halogen_filter():
         mol = self.mol
