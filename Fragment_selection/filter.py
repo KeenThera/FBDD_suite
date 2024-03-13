@@ -159,7 +159,7 @@ class Filter:
         return all([exact_mwt < 300, mol_log_p <= 3, num_hydrogen_bond_donors <= 3, num_hydrogen_bond_acceptors <= 3, num_rotatable_bonds <= 3, tpsa <= 60])
 
 
-    def organic_filter():
+    def organic_filter(self):
         mol = self.mol
         element_list = ['C','H','O','N','P','S','F','Cl','Br','I']
         for atom in mol.GetAtoms():
@@ -169,7 +169,7 @@ class Filter:
             else:
                 return False
 
-    def halogen_filter():
+    def halogen_filter(self):
         mol = self.mol
         F_count = mol.GetSubstructMatches(Chem.MolFromSmarts('[F]'))
         I_count = mol.GetSubstructMatches(Chem.MolFromSmarts('[I]'))
